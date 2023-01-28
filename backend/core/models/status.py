@@ -2,8 +2,7 @@ from django.db import models
 
 
 class Status(models.Model):
-    status = models.BooleanField(default=False, null=False)
+    status = models.IntegerField(default=0, null=False)
 
     def __str__(self):
-        return self.status
-
+        return str(self.id)
