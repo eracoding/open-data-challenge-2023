@@ -1,4 +1,11 @@
-from celery import shared_task
+from networkModels import PromptModel
+from networkModels import ImageModel
 
 
-@shared_task
+# model = PromptModel
+# model.buildModel()
+# model.trainModel(filename) # укажи путь на filename
+# model.saveModel()
+# description = model.predictModel(filepath, prompt)
+# imageModel = ImageModel()
+# image = imageModel.generate(description)
