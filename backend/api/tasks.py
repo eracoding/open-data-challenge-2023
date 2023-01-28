@@ -1,6 +1,42 @@
+import datetime
+import os.path
+
+from api.networkModels import PromptModel
+from api.search import SearchText, ValuesFromWiki
+from backend.settings import BASE_DIR
+from core.models import Category, Status, WikiKeys
+
 from celery import shared_task
+from datetime import datetime
+
+FILE_NAME = "model.txt"
+PATH_MODEL = os.path.join(BASE_DIR.absolute(), "model")
 
 
-@shared_task
-def checkTask():
-    print("Adsad")
+def createDirectoryForModel():
+    path = os.path.join(PATH_MODEL, str(datetime.timestamp(datetime.now())))
+    os.mkdir(path)
+    return path
+
+
+@shared_task(name="learnFromCategory")
+def learnFromCategory():
+    Status.objects.first().learn()
+    values = ValuesFromWiki()
+    all_values = values.resultValueFromWiki()
+    str_file = "\n".join(all_values)
+    file = open(FILE_NAME, "a+")
+    file.write(str_file)
+    model = PromptModel()
+    model.buildModel()
+    model.trainModel(FILE_NAME)
+    path = createDirectoryForModel()
+    model.saveModel(path)
+    Status.objects.first().finish()
+# model = PromptModel
+# model.buildModel()
+# model.trainModel(filename) # укажи путь на filename
+# model.saveModel()
+# description = model.predictModel(filepath, prompt)
+# imageModel = ImageModel()
+# image = imageModel.generate(description)

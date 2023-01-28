@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from api.serializers import CategorySerializer
-from core.models import Category
+from core.models import Category, Status
 
 
 class CategoryListView(generics.ListAPIView):
@@ -22,4 +22,5 @@ class CategoryCreateView(generics.CreateAPIView, generics.DestroyAPIView):
 class DeleteCategory(rest_framework.views.APIView):
     def delete(self, request):
         Category.objects.all().delete()
+        Status.objects.first().no_work()
         return Response()
