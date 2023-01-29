@@ -12,5 +12,6 @@ urlpatterns = [
     path("category/delete", views.DeleteCategory.as_view()),
     path("status/", views.StatusListView.as_view()),
     path("wikikeys/", views.WikiKeysListView.as_view()),
-    path("learn/", views.LearnView.as_view())
+    path("learn/", views.LearnView.as_view()),
+    path("predict/", views.PredictView.as_view())
 ]

@@ -1,6 +1,8 @@
 import datetime
 import os.path
 
+from aitextgen.tokenizers import train_tokenizer
+
 from api.networkModels import PromptModel
 from api.search import SearchText, ValuesFromWiki
 from backend.settings import BASE_DIR
@@ -9,12 +11,13 @@ from core.models import Category, Status, WikiKeys
 from celery import shared_task
 from datetime import datetime
 
-FILE_NAME = "model.txt"
 PATH_MODEL = os.path.join(BASE_DIR.absolute(), "model")
+
+FILE_NAME = "input.txt"
 
 
 def createDirectoryForModel():
-    path = os.path.join(PATH_MODEL, str(datetime.timestamp(datetime.now())))
+    path = os.path.join(PATH_MODEL, "model_dir")
     os.mkdir(path)
     return path
 
@@ -29,9 +32,8 @@ def learnFromCategory():
     file.write(str_file)
     model = PromptModel()
     model.buildModel()
-    model.trainModel(FILE_NAME)
-    path = createDirectoryForModel()
-    model.saveModel(path)
+    # path = createDirectoryForModel()
+    model.saveModel(os.path.join(PATH_MODEL, "model_dir"))
     Status.objects.first().finish()
 # model = PromptModel
 # model.buildModel()

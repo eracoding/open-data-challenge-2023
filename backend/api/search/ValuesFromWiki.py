@@ -18,6 +18,7 @@ class ValuesFromWiki:
 
     def resultValueFromWiki(self):
         wiki_keys = self._findKeysForSearchInWiki()
+        print(wiki_keys)
         values = []
         for item in wiki_keys:
             values.append(self.search.getValues(item))
